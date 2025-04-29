@@ -1,5 +1,5 @@
 import { withAssetsKV } from "./index";
-
+import indexHtml from "./index.html";
 interface Env {
   ASSETS_KV: KVNamespace;
 }
@@ -43,20 +43,13 @@ async function handleRequest(
   const url = new URL(request.url);
 
   // Handle the API endpoint for updating the message
-  if (url.pathname === "/api/set" && request.method === "POST") {
+  if (url.pathname === "/set" && request.method === "POST") {
     try {
       // Parse the request body to get the message
       const { message } = await parseRequestBody(request);
 
       if (!message) {
         return new Response("Message is required", { status: 400 });
-      }
-
-      // Get the original index.html template from KV
-      const indexHtml = await env.ASSETS_KV.get("index.html");
-
-      if (!indexHtml) {
-        return new Response("Index template not found", { status: 500 });
       }
 
       // Replace the placeholder with the new message
