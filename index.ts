@@ -130,13 +130,6 @@ export function withAssetsKV<Env extends Record<string, any>>(
       const asset = await kvNamespace.get(key, { type: "arrayBuffer" });
 
       if (asset === null) {
-        if (env.ASSETS) {
-          const assetsResponse = await env.ASSETS.fetch(request);
-          if (assetsResponse.ok) {
-            return assetsResponse;
-          }
-        }
-
         // Asset not found in KV, continue to worker handler
         return handler(request, env, ctx);
       }
