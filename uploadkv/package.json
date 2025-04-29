@@ -1,0 +1,27 @@
+{
+  "name": "uploadkv",
+  "version": "1.0.1",
+  "description": "Upload assets to Cloudflare Workers KV",
+  "main": "index.js",
+  "bin": {
+    "uploadkv": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "kv",
+    "assets",
+    "upload"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
