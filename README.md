@@ -1,6 +1,14 @@
 # cloudflare-assets-kv
 
-A simple library to serve and dynamically update static assets from Cloudflare KV storage in your Workers.
+Problem:
+
+- assets only update when you redeploy your worker
+- kv allows updating dynamically but isn't bound to your worker in the same way assets are
+- (made this feature request: https://x.com/janwilmake/status/1917123946798793121)
+
+Solution:
+
+- instead of using the cloudflare assets, this a simple middleware to serve and dynamically update static assets from Cloudflare KV storage in your Workers.
 
 ## Quick Start
 
