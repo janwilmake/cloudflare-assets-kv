@@ -1,5 +1,7 @@
 # cloudflare-assets-kv
 
+[![janwilmake/cloudflare-assets-kv context](https://badge.forgithub.com/janwilmake/cloudflare-assets-kv)](https://uithub.com/janwilmake/cloudflare-assets-kv)
+
 Problem:
 
 - assets only update when you redeploy your worker
