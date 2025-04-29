@@ -1,0 +1,13 @@
+name = "cloudflare-assets-kv"
+main = "example.ts"
+compatibility_date = "2025-04-29"
+assets = { directory= "./", run_worker_first = true, binding = "ASSETS" }
+dev.port = 3000
+
+routes = [
+  { pattern = "assetskv.wilmake.com", custom_domain = true }
+]
+
+[[kv_namespaces]]
+binding = "ASSETS_KV"
+id = "c0ddffa3d6eb419d95573bc335f62245"
