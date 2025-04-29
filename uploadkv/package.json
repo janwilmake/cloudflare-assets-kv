@@ -1,6 +1,6 @@
 {
   "name": "uploadkv",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Upload assets to Cloudflare Workers KV",
   "main": "index.js",
   "bin": {

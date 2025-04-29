@@ -149,7 +149,7 @@ async function uploadFile(
 
   try {
     // Build the command based on whether we have a namespace ID or binding name
-    let command = `npx wrangler kv key put `;
+    let command = `npx wrangler kv key put ${useLocal ? "" : "--remote "}`;
 
     // Add namespace identifier (either --namespace-id or --binding)
     if (isNamespaceId) {
