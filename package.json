@@ -1,5 +1,11 @@
 {
-  "name": "cloudflare-assets-kv",
-  "main": "index.ts",
-  "version": "0.0.2"
+  "name": "path-kv",
+  "main": "path-kv.ts",
+  "files": [
+    "path-kv.ts"
+  ],
+  "version": "0.0.2",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250618.0"
+  }
 }

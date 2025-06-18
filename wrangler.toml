@@ -8,5 +8,5 @@ routes = [
 ]
 
 [[kv_namespaces]]
-binding = "ASSETS_KV"
+binding = "PATH_KV"
 id = "c0ddffa3d6eb419d95573bc335f62245"

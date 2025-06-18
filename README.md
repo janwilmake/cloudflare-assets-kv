@@ -1,110 +1,44 @@
-# cloudflare-assets-kv
+# path-kv
 
 [![janwilmake/cloudflare-assets-kv context](https://badge.forgithub.com/janwilmake/cloudflare-assets-kv)](https://uithub.com/janwilmake/cloudflare-assets-kv)
 
-Problem:
+This library allows to add a single line to your fetch handler to serve dynamic assets from KV with the following rules:
 
-- assets only update when you redeploy your worker
-- kv allows updating dynamically but isn't bound to your worker in the same way assets are
-- why? because sometimes you want to generate HTML from remote data that replaces initial assets. For example, I needed this for the landing page of the new https://uuithub.com
-- (made this feature request: https://x.com/janwilmake/status/1917123946798793121)
+- Assets must be saved at the full path you would normally save assets in `public`, including `/index` and `.html|md` etc.
+- If extension was provided, will only check the full path
+- Will look for `/index.{ext}` if your path ends with a `/`
+- If extension wasn't provided, will parse accept header and look for most logical `.{ext}` based on the correct priority.
+- If accept header is `*/*` or not provided, will look for all available in this order: txt, md, json, html
 
-Solution:
+It requires `env.PATH_KV` to be a KV with files with keys being the full file paths. Allows optional configurable prefix.
 
-- instead of using the cloudflare assets, this a simple middleware to serve and dynamically update static assets from Cloudflare KV storage in your Workers.
+Made this feature request: https://x.com/janwilmake/status/1917123946798793121
 
 ## Quick Start
 
-### 1. Set up your wrangler.toml
-
-Add an ASSETS_KV namespace to your wrangler.toml:
-
-```toml
-[[kv_namespaces]]
-binding = "ASSETS_KV"
-id = "your-kv-namespace-id"
-```
-
-### 2. Install the package
-
-```bash
-npm install cloudflare-assets-kv
-```
-
-### 3. Use the middleware in your Worker
+1. Install: `npm i path-kv`
+2. Create your KV and add it to wrangler using `wrangler kv namespace create PATH_KV`
+3. Use the middleware in your worker:
 
 ```js
-import { withAssetsKV } from "cloudflare-assets-kv";
+import { withPathKv } from "path-kv";
 
 export default {
-  fetch: withAssetsKV(
-    async (request, env, ctx) => {
-      // Your worker code here
-      return new Response("Not Found", { status: 404 });
-    },
-    {
-      excludePaths: ["/api/"], // Optional: paths to exclude from KV lookup
-    },
-  ),
+  fetch: withPathKv(async (request, env, ctx) => {
+    // Your worker code here
+    return new Response("Not Found", { status: 404 });
+  }),
 };
 ```
 
-### 4. Configure your asset sources
+Now, any files you make available in your KV will be served directly by your handler. Be sure to add `contentType`
 
-Create a `.assetsignore` file in your project root to exclude files and directories:
-
-```
-node_modules
-.wrangler
-.git
-.DS_Store
-```
-
-Alternatively, place your assets in a `public` directory.
-
-### 5. Add your static assets
-
-Put your static assets in the project root (or public directory).
-
-### 6. Upload assets to KV
-
-```bash
-npx uploadkv
-```
-
-Options:
-
-- `--dryrun`: Show what would be uploaded without uploading
-- `--local`: Use local KV storage for development
-
-### 7. Dynamically update assets
-
-You can read and write assets directly in your worker code:
-
-```js
-// Read an asset
-const asset = await env.ASSETS_KV.get("index.html", { type: "text" });
-
-// Update an asset
-await env.ASSETS_KV.put("index.html", newContent, {
-  metadata: {
-    contentType: "text/html",
-    updated: new Date().toISOString(),
-  },
+```ts
+await env.PATH_KV.put("/index.html", newContent, {
+  metadata: { contentType: "text/html" },
 });
 ```
 
-## Configuration Options
+## Helper: Adding static assets from local files
 
-The `withAssetsKV` middleware accepts these options:
-
-```js
-{
-  kvNamespace: "ASSETS_KV", // KV namespace binding name
-  excludePaths: [], // Paths to exclude from asset handling
-  pathPrefix: "", // Path prefix to add when looking up assets in KV
-  cacheControl: "public, max-age=31536000", // Cache control header value
-  browserTTL: 31536000, // Browser cache TTL in seconds
-  includeHost: false // Whether to include hostname in the KV key
-}
-```
+To some it may be useful to quickly add files from `public` to your kv. For that you can just run `npx uploadkv`.
