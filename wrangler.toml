@@ -9,4 +9,4 @@ routes = [
 
 [[kv_namespaces]]
 binding = "PATH_KV"
-id = "c0ddffa3d6eb419d95573bc335f62245"
+id = "b3bc7e280b8a45e3bd1475bb5a4f1414"
