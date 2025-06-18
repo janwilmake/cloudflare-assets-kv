@@ -128,6 +128,11 @@ export function withPathKv<TEnv>(
   ): Promise<Response> => {
     const kv = env[kvBinding] as KVNamespace;
 
+    if (request.method !== "GET") {
+      // only get!
+      return handler(request, env, ctx);
+    }
+
     if (!kv) {
       console.warn(`KV namespace '${kvBinding}' not found in environment`);
       return handler(request, env, ctx);
