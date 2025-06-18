@@ -2,3 +2,5 @@ node_modules
 .wrangler
 .git
 .DS_Store
+uploadkv
+package-lock.json

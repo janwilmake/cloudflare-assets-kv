@@ -2,6 +2,8 @@ name = "cloudflare-assets-kv"
 main = "example.ts"
 compatibility_date = "2025-04-29"
 dev.port = 3000
+assets.run_worker_first = true
+assets.directory = "./"
 
 routes = [
   { pattern = "assetskv.wilmake.com", custom_domain = true }

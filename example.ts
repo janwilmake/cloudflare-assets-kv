@@ -52,6 +52,7 @@ export default {
         // Replace the placeholder with the new message
         const updatedHtml = indexHtml.replace("{{MESSAGE}}", message);
 
+        console.log("setting with message", message);
         // Write the updated HTML back to KV
         await env.PATH_KV.put("/index.html", updatedHtml, {
           metadata: { contentType: "text/html" },
@@ -75,6 +76,9 @@ export default {
     }
 
     // Handle 404s
-    return new Response("Not Found", { status: 404 });
+    return new Response(indexHtml, {
+      status: 200,
+      headers: { "Content-Type": "text/html;charset=utf8" },
+    });
   }),
 };

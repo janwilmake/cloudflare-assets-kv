@@ -160,7 +160,7 @@ export function withPathKv<TEnv>(
 
       // If path ends with /, look for /index.{ext}
       if (url.pathname.endsWith("/")) {
-        const indexPath = path + "/index";
+        const indexPath = path + "index";
         const acceptHeader = request.headers.get("accept");
         const extensions = parseAcceptHeader(acceptHeader);
 
