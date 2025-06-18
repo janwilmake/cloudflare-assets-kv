@@ -74,11 +74,13 @@ export default {
         return new Response("Error updating message", { status: 500 });
       }
     }
-
+    if (url.pathname === "/" || url.pathname === "/index.html") {
+      return new Response(indexHtml, {
+        status: 200,
+        headers: { "Content-Type": "text/html;charset=utf8" },
+      });
+    }
     // Handle 404s
-    return new Response(indexHtml, {
-      status: 200,
-      headers: { "Content-Type": "text/html;charset=utf8" },
-    });
+    return new Response("Not found", { status: 404 });
   }),
 };
