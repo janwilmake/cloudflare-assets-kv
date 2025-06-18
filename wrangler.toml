@@ -1,10 +1,10 @@
-name = "cloudflare-assets-kv"
+name = "path-kv"
 main = "example.ts"
 compatibility_date = "2025-04-29"
 dev.port = 3000
 
 routes = [
-  { pattern = "assetskv.wilmake.com", custom_domain = true }
+  { pattern = "pathkv.wilmake.com", custom_domain = true }
 ]
 
 [[kv_namespaces]]
