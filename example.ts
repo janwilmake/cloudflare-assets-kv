@@ -24,8 +24,14 @@ export default {
   fetch: withPathKv<Env>(async (request, env, ctx) => {
     const url = new URL(request.url);
 
-    // Handle message updates
-    if (url.pathname === "/set" && request.method === "POST") {
+    // Serve default index if no custom one exists in KV
+    if (url.pathname !== "/") {
+      return new Response("Not found", { status: 404 });
+    }
+
+    // is '/'
+
+    if (request.method === "POST") {
       const formData = await request.formData();
       const message = formData.get("message")?.toString();
 
@@ -38,36 +44,24 @@ export default {
       await env.PATH_KV.put("/index.html", updatedHtml, {
         metadata: { contentType: "text/html" },
       });
-
-      return new Response(null, {
-        status: 302,
-        headers: { Location: "/" },
-      });
     }
 
-    // Serve default index if no custom one exists in KV
-    if (url.pathname === "/") {
-      try {
-        // Try to get custom version from KV first
-        const stored = await env.PATH_KV.get("/index.html");
-        if (stored) {
-          return new Response(stored, {
-            headers: { "Content-Type": "text/html" },
-          });
-        }
-      } catch (e) {
-        // Fall through to default
-      }
-
-      // Serve default with placeholder
-      return new Response(
-        defaultIndexHtml.replace("{{MESSAGE}}", "Hello World!"),
-        {
+    try {
+      // Try to get custom version from KV first
+      const stored = await env.PATH_KV.get("/index.html");
+      if (stored) {
+        return new Response(stored, {
           headers: { "Content-Type": "text/html" },
-        },
-      );
+        });
+      }
+    } catch (e) {
+      // Fall through to default
     }
 
-    return new Response("Not found", { status: 404 });
+    // Serve default with placeholder
+    return new Response(
+      defaultIndexHtml.replace("{{MESSAGE}}", "Hello World!"),
+      { headers: { "Content-Type": "text/html" } },
+    );
   }),
 };
