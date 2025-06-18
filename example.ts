@@ -12,7 +12,7 @@ const defaultIndexHtml = `
 </head>
 <body>
     <h1>{{MESSAGE}}</h1>
-    <form method="POST" action="/set">
+    <form method="POST">
         <input type="text" name="message" placeholder="Enter new message" required>
         <button type="submit">Update</button>
     </form>
