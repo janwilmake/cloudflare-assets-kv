@@ -185,6 +185,16 @@ export function withPathKv<TEnv>(
         const acceptHeader = request.headers.get("accept");
         const extensions = parseAcceptHeader(acceptHeader);
 
+        // first try direct
+        const result = await tryGetFromKV(kv, path, prefix);
+        if (result) {
+          return new Response(result.content, {
+            headers: {
+              "Content-Type": result.contentType,
+              "Cache-Control": "public, max-age=3600",
+            },
+          });
+        }
         for (const ext of extensions) {
           const result = await tryGetFromKV(kv, `${path}.${ext}`, prefix);
           if (result) {
