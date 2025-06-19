@@ -1,10 +1,10 @@
 {
   "name": "path-kv",
+  "version": "0.0.6",
   "main": "path-kv.ts",
   "files": [
     "path-kv.ts"
   ],
-  "version": "0.0.5",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250618.0"
   }

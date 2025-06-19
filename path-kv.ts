@@ -190,7 +190,7 @@ export function withPathKv<TEnv>(
         if (result) {
           return new Response(result.content, {
             headers: {
-              "Content-Type": result.contentType,
+              "Content-Type": result.contentType || "text/plain;charset=utf8",
               "Cache-Control": "public, max-age=3600",
             },
           });
